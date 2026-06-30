@@ -3,6 +3,8 @@
 import { useState } from 'react';
 
 export default function Home() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -65,11 +67,37 @@ export default function Home() {
     setError(newErrors);
     if (Object.values(newErrors).every((err) => err === '')) {
       console.log('Form válido:', formData);
+      setIsSubmitted(true);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        queryType: '',
+        message: '',
+        consent: '',
+      });
+      setTimeout(() => setIsSubmitted(false), 5000);
     }
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
+      {isSubmitted && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed top-300 flex w-[90%] max-w-md flex-col gap-100 rounded-lg bg-grey-900 p-300 text-white"
+        >
+          <p className="flex items-center gap-100 text-preset-3 font-bold">
+            {/* swap for the check-icon.svg from the challenge assets */}✓
+            Message Sent!
+          </p>
+          <p className="text-grey-300 text-preset-4">
+            Thanks for completing the form. We'll be in touch soon!
+          </p>
+        </div>
+      )}
+
       <form
         onSubmit={handleSubmit}
         className="flex w-[90%] flex-col gap-300 rounded-2xl bg-white p-300 text-grey-900"
@@ -191,8 +219,6 @@ export default function Home() {
         >
           Submit
         </button>
-        {/* <p>Message Sent!</p>
-        <p>Thanks for completing the form. We'll be in touch soon!</p> */}
       </form>
     </main>
   );
