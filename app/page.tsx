@@ -147,35 +147,41 @@ export default function Home() {
         {/* Begin of Email Address */}
 
         <div className="flex flex-col">
-          <label htmlFor="emailAddress" className="mb-100 text-preset-4">
-            Email Address<span className="ml-100 text-green-600">*</span>
+          <label htmlFor="email" className="mb-100 text-preset-4">
+            Email Address<span className="ml-100 text-green-600" aria-hidden="true">*</span>
+            <span className="sr-only">required</span>
           </label>
           <input
-            type="text"
-            id="emailAddress"
+            type="email"
+            id="email"
             name="email"
             placeholder="john.doe@example.com"
             value={formData.email}
             onChange={handleChange}
+            aria-describedby={error.email ? 'email-error' : undefined}
             className={`rounded-lg border px-300 py-150 ${error.email ? 'border border-red text-red' : 'border-grey-500 text-grey-900'}`}
           />
           {error.email && (
-            <p className="mt-100 text-preset-4 text-red">{error.email}</p>
+            <p id="email-error" className="mt-100 text-preset-4 text-red" role="alert">{error.email}</p>
           )}
         </div>
 
         {/* Begin of Query Type */}
 
-        <div className="flex flex-col">
-          <label className="mb-200 text-preset-4">
-            Query Type<span className="ml-100 text-green-600">*</span>
-          </label>
+        <fieldset className="flex flex-col">
+          <legend className="mb-200 text-preset-4">
+            Query Type<span className="ml-100 text-green-600" aria-hidden="true">*</span>
+            <span className="sr-only">required</span>
+          </legend>
           <div className="mb-200 flex flex-row items-center gap-150 rounded-lg border border-grey-500 px-300 py-150 text-grey-900">
             <input
               type="radio"
               id="queryType1"
+              name="queryType"
               value="General Enquiry"
-              className={`h-5 w-5 appearance-none rounded-full border border-grey-500 opacity-[0.5]`}
+              checked={formData.queryType === 'General Enquiry'}
+              onChange={handleChange}
+              className="h-5 w-5 appearance-none rounded-full border border-grey-500 opacity-[0.5]"
             />
             <label htmlFor="queryType1">General Enquiry</label>
           </div>
@@ -184,15 +190,18 @@ export default function Home() {
             <input
               type="radio"
               id="queryType2"
+              name="queryType"
               value="Support Enquiry"
-              className={`h-5 w-5 appearance-none rounded-full border border-grey-500 opacity-[0.5]`}
+              checked={formData.queryType === 'Support Enquiry'}
+              onChange={handleChange}
+              className="h-5 w-5 appearance-none rounded-full border border-grey-500 opacity-[0.5]"
             />
             <label htmlFor="queryType2">Support Enquiry</label>
           </div>
-          {error && (
-            <p className="mt-100 text-preset-4 text-red">{error.queryType}</p>
+          {error.queryType && (
+            <p className="mt-100 text-preset-4 text-red" role="alert">{error.queryType}</p>
           )}
-        </div>
+        </fieldset>
 
         {/* Begin of Consent */}
 
